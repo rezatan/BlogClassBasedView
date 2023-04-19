@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+	Home
+{% endblock page_title %}
+
+
+{% block contents %}
+	<h1>Home</h1>
+	<div class="row">
+		{% for article in latest_artikel_list %}
+			<div class="col-sm-4">
+				<div class="card" >
+				  <div class="card-body">
+				    <h5 class="card-title"><a href="{% url 'article:category' article.category 1%}">{{article.category}}</a></h5>
+				    <h6 class="card-subtitle mb-2 text-dark">{{article.title}}</h6>
+				    <h6 class="card-subtitle mb-2 text-muted">{{article.published|date}}</h6>
+				    <p class="card-text">{{article.body|truncatewords:10}}</p>
+				    <a href="{% url 'article:detail' article.slug%}" class="card-link">more</a>
+				  </div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+	
+
+	
+
+	
+{% endblock contents %}

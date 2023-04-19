@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+    Create
+{% endblock page_title %}
+
+{% block contents %}
+	<h1>Add Article</h1>
+
+	<form method='POST'>
+		{% csrf_token %}
+
+		<div class="form-group">
+		    <label for="{{form.title.id_for_label}}">{{form.title.label}}:</label>
+		    <input type="text" class="form-control" name="{{form.title.name}}" maxlength="{{form.title.max}}" required id="{{form.title.id_for_label}}">    
+		</div>
+
+		<div class="form-group">
+			<label for="{{form.body.id_for_label}}">{{form.body.label}}:</label>
+			<textarea class="form-control" name="{{form.body.name}}" rows="10" required id="{{form.body.id_for_label}}"></textarea>
+		</div>
+		<div class="form-group">
+		    <label for="{{form.category.id_for_label}}">{{form.category.label}}	: </label>
+			{{form.category}}
+		</div>
+		<!-- <div class="form-group">
+		    <label for="{{form.category.id_for_label}}">{{form.category.label}}:</label>
+		    <input type="text" class="form-control" name="{{form.category.name}}" maxlength="{{form.category.max}}" required id="{{form.category.id_for_label}}">    
+		</div> -->
+
+
+		<button type="submit" class="btn btn-primary">Add</button>
+	</form>
+{% endblock contents %}
