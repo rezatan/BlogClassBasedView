@@ -1,3 +1,3 @@
 # BlogClassBasedViews
 
-Django Class-Based Views with Bootstrap
+Article CRUD Django Class-Based Views with Bootstrap
