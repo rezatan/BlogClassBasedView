@@ -1,20 +1,24 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block page_title %}
     Manage Article
 {% endblock page_title %}
 
 {% block contents %}
+<link rel="stylesheet" type="text/css" href="{% static 'switch.css' %}">
     <h1>Manage Article</h1>
     <a class="btn btn-primary btn-block" href="{% url 'article:create' %}">Add article</a>
     <table class="table mt-4">
 	  <thead class="thead-dark">
 	    <tr>
 	      <th scope="col">#</th>
-	      <th scope="col">title</th>
+	      <th scope="col">Title</th>
 	      <th scope="col">Category</th>
 	      <th scope="col">Published</th>
 	      <th scope="col">Action</th>
+		  <th></th>
+		  <th>Publish</th>
 	    </tr>
 	  </thead>
 	  <tbody>
@@ -26,8 +30,18 @@
 	      <td>{{article.published}}</td>
 	      <td>
 			<a class="btn btn-warning" href="{% url 'article:update' article.id %}">Edit</a>
+		  </td>
+		  <td>
 	      	<a class="btn btn-danger" href="{% url 'article:delete' article.id %}">Delete</a>
 	      </td>
+		  <td>
+		  	<label class="toggle-switch">
+				<input type="checkbox">
+				<div class="toggle-switch-background">
+					<div class="toggle-switch-handle"></div>
+				</div>
+			</label>
+		</td>
 	    </tr>
 	    {% endfor %}
 	  </tbody>

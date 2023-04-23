@@ -18,7 +18,7 @@ from django.urls import path, include
 from .views import BlogHomeView, LoginView, LogoutView
 
 urlpatterns = [
-    path('logout', LogoutView.as_view(), name='logout'),
+    path('logout/', LogoutView.as_view(), name='logout'),
     path('login/', LoginView.as_view(), name= 'login'),
 	path('article/', include('article.urls', namespace='article')),
 	path('', BlogHomeView.as_view(), name='home'),

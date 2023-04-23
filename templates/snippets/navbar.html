@@ -1,7 +1,7 @@
 <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
   <div class="container">
 	  <a class="navbar-brand" href="{% url 'home' %}">BLOG</a>
-	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+	  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 	    <span class="navbar-toggler-icon"></span>
 	  </button>
 	  <div class="collapse navbar-collapse" id="navbarNavDropdown">
@@ -12,25 +12,25 @@
 	      <li class="nav-item">
 	        <a class="nav-link" href="{% url 'article:list' 1 %}">Artikel</a>
 	      </li>
-	    </ul>
 		{% if user.is_authenticated %}
-		<div class="nav-item dropdown ml-auto">
-	        <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		<li class="nav-item dropdown ml-auto">
+	        <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	          {{user}}
 	        </a>
-	        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-	          <a class="dropdown-item" href="{% url 'article:create' %}">Add artikel</a>
-	          <a class="dropdown-item" href="{% url 'article:manage' %}">Manage artikel</a>
-			  <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
-	        </div>
-	    </div>
+	        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+	          <li><a class="dropdown-item" href="{% url 'article:create' %}">Add artikel</a></li>
+	          <li><a class="dropdown-item" href="{% url 'article:manage' %}">Manage artikel</a></li>
+			  <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+	        </ul>
+	    </li>
+		</ul>
 		{% else %}
-		<div class="nav-item dropdown ml-auto">
+		<li class="nav-item dropdown ml-auto">
 	        <a class="nav-link" href="{% url 'login' %}">
 	          Login
 	        </a>
-			</div>
-		{% endif %}
+			</li>
+		{% endif %}  
 	    
 	  </div>
   </div>

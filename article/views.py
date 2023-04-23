@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic import (
 	ListView, 
 	DetailView, 
@@ -15,25 +15,34 @@ from .models import Article
 from .forms import ArticleForm
 
 
-class ArticleUpdateView(UpdateView):
+@method_decorator(login_required, name='dispatch')
+class ArticleUpdateView(PermissionRequiredMixin, UpdateView):
+	permission_required = 'article.change_article'
 	form_class = ArticleForm
 	model = Article
 	template_name = "article/article_update.html"
 
 
-class ArticleDeleteView(DeleteView):
+@method_decorator(login_required, name='dispatch')
+class ArticleDeleteView(PermissionRequiredMixin, DeleteView):
+	permission_required = 'article.delete_article'
 	model = Article
 	template_name = "article/article_delete_confirmation.html"
 	success_url = reverse_lazy('article:manage')
+
 
 @method_decorator(login_required, name='dispatch')
 class ArticleManageView(ListView):
 	model = Article
 	template_name = "article/article_manage.html"
 	context_object_name = 'article_list'
+	def get(self, *args, **kwargs):
+		print(self.request.user.get_all_permissions())
+		return super().get(self.request, *args, **kwargs)
 
-
-class ArticleCreateView(CreateView):
+@method_decorator(login_required, name='dispatch')
+class ArticleCreateView(PermissionRequiredMixin, CreateView):
+	permission_required = 'article.add_article'
 	form_class = ArticleForm
 	template_name = "article/article_create.html"
 
