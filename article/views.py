@@ -6,7 +6,7 @@ from django.views.generic import (
 	DeleteView, 
 	UpdateView
 )
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
 
@@ -32,6 +32,7 @@ class ArticleDeleteView(PermissionRequiredMixin, DeleteView):
 
 
 @method_decorator(login_required, name='dispatch')
+
 class ArticleManageView(ListView):
 	model = Article
 	template_name = "article/article_manage.html"

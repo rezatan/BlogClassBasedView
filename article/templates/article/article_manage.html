@@ -19,7 +19,7 @@
 	      <th scope="col">Category</th>
 	      <th scope="col">Published</th>
 	      <th scope="col">Action</th>
-		  {% if perms.article.can_delete_article %}
+		  {% if perms.article.delete_article %}
 		  <th></th>
 		  {% endif %}
 		  <th>Publish</th>
@@ -32,9 +32,11 @@
 	      <td>{{article.title}}</td>
 	      <td>{{article.category}}</td>
 	      <td>{{article.published}}</td>
+		   {% if perms.article.change_article %}
 	      <td>
 			<a class="btn btn-warning" href="{% url 'article:update' article.id %}">Edit</a>
 		  </td>
+		  {% endif %}
 		  {% if perms.article.delete_article %}
 		  <td>
 	      	<a class="btn btn-danger" href="{% url 'article:delete' article.id %}">Delete</a>
