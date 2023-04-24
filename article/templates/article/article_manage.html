@@ -8,7 +8,9 @@
 {% block contents %}
 <link rel="stylesheet" type="text/css" href="{% static 'switch.css' %}">
     <h1>Manage Article</h1>
+	{% if perms.article.add_article %}
     <a class="btn btn-primary btn-block" href="{% url 'article:create' %}">Add article</a>
+	{% endif %}
     <table class="table mt-4">
 	  <thead class="thead-dark">
 	    <tr>
@@ -17,7 +19,9 @@
 	      <th scope="col">Category</th>
 	      <th scope="col">Published</th>
 	      <th scope="col">Action</th>
+		  {% if perms.article.can_delete_article %}
 		  <th></th>
+		  {% endif %}
 		  <th>Publish</th>
 	    </tr>
 	  </thead>
@@ -31,9 +35,12 @@
 	      <td>
 			<a class="btn btn-warning" href="{% url 'article:update' article.id %}">Edit</a>
 		  </td>
+		  {% if perms.article.delete_article %}
 		  <td>
 	      	<a class="btn btn-danger" href="{% url 'article:delete' article.id %}">Delete</a>
 	      </td>
+		  {% endif %}
+	
 		  <td>
 		  	<label class="toggle-switch">
 				<input type="checkbox">

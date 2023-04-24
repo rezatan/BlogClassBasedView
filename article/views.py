@@ -49,14 +49,13 @@ class ArticleCreateView(PermissionRequiredMixin, CreateView):
 
 class ArticleEachCategory():
 	model = Article
+
 	def get_latest_article_each_category(self):
 		category_list = self.model.objects.values_list('category', flat=True).distinct()
 		queryset = []
-
 		for category in category_list:
 			article = self.model.objects.filter(category=category).latest('published')
 			queryset.append(article)
-
 		return queryset
 		
 
@@ -79,17 +78,17 @@ class ArticleCategoryListView(ListView):
 
 
 class ArticleListView(ListView):
-    model = Article
-    template_name = "article/article_list.html"
-    context_object_name = 'article_list'
-    ordering = ['-published']
-    paginate_by = 3
+	model = Article
+	template_name = "article/article_list.html"
+	context_object_name = 'article_list'
+	ordering = ['-published']
+	paginate_by = 3
 
-    def get_context_data(self,*args,**kwargs):
-    	category_list = self.model.objects.values_list('category', flat=True).distinct()
-    	self.kwargs.update({'category_list':category_list})
-    	kwargs = self.kwargs
-    	return super().get_context_data(*args,**kwargs)
+	def get_context_data(self,*args,**kwargs):
+		category_list = self.model.objects.values_list('category', flat=True).distinct()
+		self.kwargs.update({'category_list':category_list})
+		kwargs = self.kwargs
+		return super().get_context_data(*args,**kwargs)
 
 
 class ArticleDetailView(DetailView):
@@ -100,10 +99,8 @@ class ArticleDetailView(DetailView):
 	def get_context_data(self,*args,**kwargs):
 		category_list = self.model.objects.values_list('category', flat=True).distinct()
 		self.kwargs.update({'category_list':category_list})
-
 		similiar_article = self.model.objects.filter(category=self.object.category).exclude(id=self.object.id)
 		self.kwargs.update({'similiar_article':similiar_article})	
-
 		kwargs = self.kwargs
 		return super().get_context_data(*args,**kwargs)
 
