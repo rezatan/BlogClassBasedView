@@ -6,10 +6,13 @@ from django.views.generic import (
 	DeleteView, 
 	UpdateView
 )
+from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse_lazy
-
+from django.urls import reverse
+from django.shortcuts import get_object_or_404, redirect
 # load model
 from .models import Article
 from .forms import ArticleForm
@@ -32,7 +35,6 @@ class ArticleDeleteView(PermissionRequiredMixin, DeleteView):
 
 
 @method_decorator(login_required, name='dispatch')
-
 class ArticleManageView(ListView):
 	model = Article
 	template_name = "article/article_manage.html"
@@ -40,6 +42,17 @@ class ArticleManageView(ListView):
 	def get(self, *args, **kwargs):
 		print(self.request.user.get_all_permissions())
 		return super().get(self.request, *args, **kwargs)
+	
+	@method_decorator(csrf_exempt)
+	def dispatch(self, request, *args, **kwargs):
+		return super().dispatch(request, *args, **kwargs)
+		
+	def post(self, *args, **kwargs):
+		article_id = self.request.POST.get('article_id')
+		article = Article.objects.get(id=article_id)
+		article.is_published = not article.is_published
+		article.save()
+		return self.get(self, *args, **kwargs)
 
 @method_decorator(login_required, name='dispatch')
 class ArticleCreateView(PermissionRequiredMixin, CreateView):
@@ -69,6 +82,7 @@ class ArticleCategoryListView(ListView):
 
 	def get_queryset(self):
 		self.queryset = self.model.objects.filter(category=self.kwargs['category'])
+		self.queryset = self.model.objects.filter(is_published=True)
 		return super().get_queryset()
 
 	def get_context_data(self,*args,**kwargs):
@@ -90,7 +104,10 @@ class ArticleListView(ListView):
 		self.kwargs.update({'category_list':category_list})
 		kwargs = self.kwargs
 		return super().get_context_data(*args,**kwargs)
-
+		
+	def get_queryset(self):
+		self.queryset = self.model.objects.filter(is_published=True)
+		return super().get_queryset()
 
 class ArticleDetailView(DetailView):
 	model = Article
@@ -104,4 +121,5 @@ class ArticleDetailView(DetailView):
 		self.kwargs.update({'similiar_article':similiar_article})	
 		kwargs = self.kwargs
 		return super().get_context_data(*args,**kwargs)
+
 

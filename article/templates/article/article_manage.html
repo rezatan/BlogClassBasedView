@@ -18,7 +18,9 @@
 	      <th scope="col">Title</th>
 	      <th scope="col">Category</th>
 	      <th scope="col">Published</th>
-	      <th scope="col">Action</th>
+		  {% if perms.article.change_article %}
+		  <th scope="col">Action</th>
+		  {% endif %}
 		  {% if perms.article.delete_article %}
 		  <th></th>
 		  {% endif %}
@@ -44,12 +46,26 @@
 		  {% endif %}
 	
 		  <td>
-		  	<label class="toggle-switch">
-				<input type="checkbox">
+			<form method="post" action="{% url 'article:manage' %}">
+				{% csrf_token %}
+				<label class="toggle-switch">
+				{% if perms.article.publish_article %}
+				<button type="submit" name="article_id" value="{{ article.id }}"></button>
+				{% endif %}
+				<input type="checkbox" {% if article.is_published %} checked {% if not perms.article.publish_article %}
+				disabled
+				{% endif %}{% endif %}>
 				<div class="toggle-switch-background">
-					<div class="toggle-switch-handle"></div>
+					<div class="toggle-switch-handle" ></div>
 				</div>
-			</label>
+				</label>
+				{% comment %} <input type="hidden" name="article_id" value="{{ article.id }}">
+				{% if article.is_published %}
+					<input type="submit" value="Unpublish">
+				{% else %}
+					<input type="submit" value="Publish">
+				{% endif %} {% endcomment %}
+			</form>
 		</td>
 	    </tr>
 	    {% endfor %}

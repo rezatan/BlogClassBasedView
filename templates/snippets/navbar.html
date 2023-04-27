@@ -20,7 +20,7 @@
 				{{user}}
 				</a>
 				<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-				 {% if perms.article.add_article or perms.article.delete_article or perms.article.change_article %}
+				 {% if perms.article.add_article or perms.article.delete_article or perms.article.change_article or perms.article.publish_article %}
 				   <li><a class="dropdown-item" href="{% url 'article:manage' %}">Manage artikel</a></li>
 				 {% endif %}
 				<li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>

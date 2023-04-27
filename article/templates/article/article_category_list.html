@@ -12,7 +12,7 @@
 	<div class="col-md-8">
 		<h2 class="border-bottom">Category: {{category}}</h2>
 		{% for article in article_list %}
-		<h3><a class="text-dark" href="{% url 'article:detail' article.slug %}">{{article.judul}}</a></h3>
+		<h3><a class="text-dark" href="{% url 'article:detail' article.slug %}">{{article.title}}</a></h3>
 		<p>{{article.published}}</p>
 		<p class="border-bottom">{{article.body|truncatewords:50}} <a href="{% url 'article:detail' article.slug %}">Selengkapnya</a></p>
 	{% endfor %}
