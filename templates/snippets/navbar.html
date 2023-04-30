@@ -1,4 +1,4 @@
-<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-success bg-gradient ">
   <div class="container">
 	  <a class="navbar-brand" href="{% url 'home' %}">BLOG</a>
 	  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,7 +21,7 @@
 				</a>
 				<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 				 {% if perms.article.add_article or perms.article.delete_article or perms.article.change_article or perms.article.publish_article %}
-				   <li><a class="dropdown-item" href="{% url 'article:manage' %}">Manage artikel</a></li>
+				   <li><a class="dropdown-item" href="{% url 'article:manage' 1%}">Manage artikel</a></li>
 				 {% endif %}
 				<li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
 				</ul>

@@ -37,13 +37,13 @@ class LoginView(UserPassesTestMixin, LoginView):
 		if self.request.user.groups.filter(name='reader').exists():
 			return redirect('home')
 		else :
-			return redirect('article:manage') 
+			return redirect('article:manage', args=[1]) 
 		
 	def get_success_url(self):
 		if self.request.user.groups.filter(name='reader').exists():
 			return reverse_lazy('home')
 		else :
-			return reverse_lazy('article:manage')
+			return reverse_lazy('article:manage', args=[1])
 
 	def form_valid(self, form):
         # Log the user in.

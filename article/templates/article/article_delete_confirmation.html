@@ -12,6 +12,6 @@
 	<form method='POST'>
 		{% csrf_token %}
 		<button type="submit" class="btn btn-outline-primary">Ya</button>
-		<a class="btn btn-outline-danger" href="{% url 'article:manage' %}">Tidak</a>
+		<a class="btn btn-outline-danger" href="{% url 'article:manage' 1 %}">Tidak</a>
 	</form>
 {% endblock contents %}

@@ -43,6 +43,3 @@ class Article(models.Model):
 	def get_absolute_url(self):
 		url_slug = {'slug':self.slug}
 		return reverse('article:detail', kwargs = url_slug)
-
-	def __str__(self):
-		return "{}. {} - {}".format(self.id, self.title, self.category)

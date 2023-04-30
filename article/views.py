@@ -31,7 +31,7 @@ class ArticleDeleteView(PermissionRequiredMixin, DeleteView):
 	permission_required = 'article.delete_article'
 	model = Article
 	template_name = "article/article_delete_confirmation.html"
-	success_url = reverse_lazy('article:manage')
+	success_url = reverse_lazy('article:manage', args=[1])
 
 
 @method_decorator(login_required, name='dispatch')
@@ -39,6 +39,8 @@ class ArticleManageView(ListView):
 	model = Article
 	template_name = "article/article_manage.html"
 	context_object_name = 'article_list'
+	ordering = ['-created']
+	paginate_by = 3
 	def get(self, *args, **kwargs):
 		print(self.request.user.get_all_permissions())
 		return super().get(self.request, *args, **kwargs)

@@ -18,6 +18,13 @@
 		{% endblock contents %}
 	</div>
 
+{% block snippets %}
+    {% if request.path != "/login/"%}
+        {% include 'snippets/footer.html' %}
+    {% endif %}
+{% endblock %}
+
+
 	{% include "snippets/scripts.html" %}
 </body>
 </html>
