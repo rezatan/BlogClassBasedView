@@ -9,7 +9,8 @@
 <link rel="stylesheet" type="text/css" href="{% static 'switch.css' %}">
     <h1>Manage Article</h1>
 	{% if perms.article.add_article %}
-    <a class="btn btn-primary btn-block" href="{% url 'article:create' %}">Add article</a>
+    <a class="btn btn-primary btn-block" href="{% url 'article:create' %}">Add Article</a>
+	<a class="btn btn-primary btn-block" href="{% url 'article:addcategory' %}">Add Category</a>
 	{% endif %}
     <table class="table mt-4">
 	  <thead class="thead-dark">

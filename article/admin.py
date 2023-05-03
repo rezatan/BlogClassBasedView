@@ -1,6 +1,6 @@
 from django.contrib import admin
 # Register your models here.
-from .models import Article
+from .models import Article, Category
 
 class ArticleAdmin(admin.ModelAdmin):
 	list_display = ['title', 'category','is_published', 'published', 'updated', 'created']
@@ -69,5 +69,7 @@ class ArticleAdmin(admin.ModelAdmin):
 					]
 
 		return readonly_fields
-
+class CategoryAdmin(admin.ModelAdmin):
+	list_display = ['name', 'id']
 admin.site.register(Article, ArticleAdmin)
+admin.site.register(Category, CategoryAdmin)

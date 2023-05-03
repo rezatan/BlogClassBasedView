@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+    Add Category
+{% endblock page_title %}
+
+{% block contents %}
+	<h1>Add Category</h1>
+	<form method='POST'>
+		{% csrf_token %}
+		 {% if form.errors %}
+    <div class="alert alert-danger">
+      {% for field, errors in form.errors.items %}
+        {% for error in errors %}
+          <strong>{{ field }}:</strong> {{ error }}<br>
+        {% endfor %}
+      {% endfor %}
+      {% for error in form.non_field_errors %}
+        {{ error }}
+      {% endfor %}
+    </div>
+  {% endif %}
+		<div class="form-group">
+		    <label for="{{form.name.id_for_label}}">{{form.name.label}}:</label>
+		    <input type="text" class="form-control" name="{{form.name.name}}" maxlength="{{form.name.max}}" required id="{{form.name.id_for_label}}">    
+		</div>
+
+		<button type="submit" class="btn btn-primary mt-4">Add</button>
+	</form>
+{% endblock contents %}

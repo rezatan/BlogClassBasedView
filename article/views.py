@@ -14,8 +14,8 @@ from django.urls import reverse_lazy
 from django.urls import reverse
 from django.shortcuts import get_object_or_404, redirect
 # load model
-from .models import Article
-from .forms import ArticleForm
+from .models import Article, Category
+from .forms import ArticleForm, CategoryForm
 
 
 @method_decorator(login_required, name='dispatch')
@@ -41,9 +41,6 @@ class ArticleManageView(ListView):
 	context_object_name = 'article_list'
 	ordering = ['-created']
 	paginate_by = 3
-	def get(self, *args, **kwargs):
-		print(self.request.user.get_all_permissions())
-		return super().get(self.request, *args, **kwargs)
 	
 	@method_decorator(csrf_exempt)
 	def dispatch(self, request, *args, **kwargs):
@@ -62,15 +59,33 @@ class ArticleCreateView(PermissionRequiredMixin, CreateView):
 	form_class = ArticleForm
 	template_name = "article/article_create.html"
 
+@method_decorator(login_required, name='dispatch')
+class CategoryCreateView(PermissionRequiredMixin, CreateView):
+	permission_required = 'article.add_article'
+	form_class = CategoryForm
+	template_name = "article/article_add_category.html"
+	
+	def get_success_url(self):
+		return reverse_lazy('article:manage', kwargs={'page': 1})
+
+	def form_valid(self, form):
+		name = form.cleaned_data['name']
+		if Category.objects.filter(name=name).exists():
+			form.add_error('name', 'Category with this name already exists')
+			return self.form_invalid(form)
+		else:
+			category = Category(name=name)
+			category.save()
+			return redirect(self.get_success_url())
 
 class ArticleEachCategory():
 	model = Article
 
 	def get_latest_article_each_category(self):
-		category_list = self.model.objects.values_list('category', flat=True).distinct()
+		category_list = self.model.objects.values_list('category__name', flat=True).distinct()
 		queryset = []
 		for category in category_list:
-			article = self.model.objects.filter(category=category).latest('published')
+			article = self.model.objects.filter(category__name=category, is_published=True).latest('published')
 			queryset.append(article)
 		return queryset
 		
@@ -83,12 +98,12 @@ class ArticleCategoryListView(ListView):
 	paginate_by = 3
 
 	def get_queryset(self):
-		self.queryset = self.model.objects.filter(category=self.kwargs['category'])
+		self.queryset = self.model.objects.filter(category__name=self.kwargs['category'])
 		self.queryset = self.model.objects.filter(is_published=True)
 		return super().get_queryset()
 
 	def get_context_data(self,*args,**kwargs):
-		category_list = self.model.objects.values_list('category', flat=True).distinct().exclude(category=self.kwargs['category'])
+		category_list = self.model.objects.values_list('category__name', flat=True).distinct().exclude(category__name=self.kwargs['category'])
 		self.kwargs.update({'category_list':category_list})
 		kwargs = self.kwargs
 		return super().get_context_data(*args,**kwargs)	
@@ -102,7 +117,8 @@ class ArticleListView(ListView):
 	paginate_by = 3
 
 	def get_context_data(self,*args,**kwargs):
-		category_list = self.model.objects.values_list('category', flat=True).distinct()
+		category_list = self.model.objects.values_list('category__name', flat=True).distinct()
+		print(category_list)
 		self.kwargs.update({'category_list':category_list})
 		kwargs = self.kwargs
 		return super().get_context_data(*args,**kwargs)
@@ -117,7 +133,7 @@ class ArticleDetailView(DetailView):
 	context_object_name = 'article'
 
 	def get_context_data(self,*args,**kwargs):
-		category_list = self.model.objects.values_list('category', flat=True).distinct()
+		category_list = self.model.objects.values_list('category__name', flat=True).distinct()
 		self.kwargs.update({'category_list':category_list})
 		similiar_article = self.model.objects.filter(category=self.object.category).exclude(id=self.object.id)
 		self.kwargs.update({'similiar_article':similiar_article})	

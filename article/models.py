@@ -1,25 +1,25 @@
 from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 
 # Create your models here.
 
-
+class Category(models.Model):
+	name = models.CharField(max_length=50)
+	
+	def __str__(self):
+		return self.name
+		
+	def get_absolute_url(self):
+		return reverse_lazy('article:manage', args=[1])
+	
+		
 
 class Article(models.Model):
 	title		= models.CharField(max_length=255)
 	body 		= models.TextField()
-	category_choices = [
-		('Test', 'Test'),
-		('News', 'News'),
-		('Sport', 'Sport'),
-	]
-	category 	= models.CharField(
-		max_length=10,
-		choices=category_choices,
-		default='Test'
-	)
+	category = models.ForeignKey(Category, on_delete=models.CASCADE)
 	created		= models.DateTimeField(auto_now_add=True)
 	updated 	= models.DateTimeField(auto_now=True)
 	is_published = models.BooleanField(default=False)

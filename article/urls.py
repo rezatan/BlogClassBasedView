@@ -7,11 +7,13 @@ from .views import (
 	ArticleManageView,
 	ArticleDeleteView,
 	ArticleUpdateView,
+	CategoryCreateView,
 )
 
 app_name = 'article'
 urlpatterns = [
 	path('create/', ArticleCreateView.as_view(), name='create'),
+	path('category/', CategoryCreateView.as_view(), name='addcategory'),
 	path('manage/<int:page>', ArticleManageView.as_view(), name='manage'),
 	path('manage/update/<int:pk>', ArticleUpdateView.as_view(), name='update'),
 	path('manage/delete/<int:pk>', ArticleDeleteView.as_view(), name='delete'),
