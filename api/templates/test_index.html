@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}
+    TEST API
+{% endblock page_title %}
+
+{% block contents %}
+<link rel="stylesheet" type="text/css" href="{% static 'switch.css' %}">
+    <h1>Manage Test</h1>
+	{% if perms.article.add_article %}
+    <a class="btn btn-primary btn-block" href="{% url 'article:create' %}">Add Article</a>
+	<a class="btn btn-primary btn-block" href="{% url 'article:addcategory' %}">Add Category</a>
+	{% endif %}
+	<h1>Rock Paper Scissors Prediction</h1>
+    <div id="token-result" style="display: none;">
+        <h2>Generated Token:</h2>
+        <p id="token-text"></p>
+    </div>
+
+    <form id="token-form" action="/api/token/" method="post" class="mb-5">
+        {% csrf_token %}
+        <label for="username">Username:</label>
+        <input class="form-control" type="text" id="username" name="username" required><br><br>
+        
+        <label for="password">Password:</label>
+        <input class="form-control" type="password" id="password" name="password" required><br><br>
+        
+        <button type="submit" class="btn btn-success">Generate Token</button>
+    </form>
+    <form id="prediction-form" action="{% url 'api:predict_hand_api' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="image">Upload Image:</label>
+        <input type="file" name="image">
+    <div class="input-group mt-4">
+        <label class="input-group-text" for="token">Token:</label>
+        <input class="form-control" type="text" name="token" placeholder="Token Auth" required>
+        
+    </div>
+    <input type="submit" value="Predict" class="btn btn-success form-control mt-3">
+    </form>
+
+    <div id="prediction-result" style="display: none;">
+        <h2>Prediction Result:</h2>
+        <p id="prediction-text"></p>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('#prediction-form').submit(function(event) {
+            event.preventDefault();
+            var form = $(this);
+            var formData = new FormData(form[0]);
+
+            $.ajax({
+                url: form.attr('action'),
+                type: form.attr('method'),
+                data: formData,
+                processData: false,
+                contentType: false,
+                beforeSend: function(xhr) {
+                    // Ambil token dari input pengguna
+                    var token = $('input[name="token"]').val();
+                    // Atur header Authorization dengan token
+                    xhr.setRequestHeader('Authorization', "Bearer " + token);
+                },
+                success: function(response) {
+                    $('#prediction-text').text(response.prediction);
+                    $('#prediction-result').show();
+                },
+                error: function() {
+                    alert('Error occurred during prediction.');
+                }
+            });
+        });
+    });
+</script>
+    <script>
+        $(document).ready(function() {
+            $('#token-form').submit(function(event) {
+                event.preventDefault();
+
+                var form = $(this);
+
+                $.ajax({
+                    url: form.attr('action'),
+                    type: form.attr('method'),
+                    data: form.serialize(),
+                    success: function(response) {
+                        $('#token-text').text(response.access);
+                        $('#token-result').show();
+                    },
+                    error: function() {
+                        alert('Error occurred during token generation.');
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock contents %}

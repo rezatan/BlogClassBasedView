@@ -13,7 +13,7 @@
 			{% for article in article_list %}
 				<h3><a class="text-dark" href="{% url 'article:detail' article.slug %}">{{article.title}}</a></h3>
 				<p>Category: {{article.category}} | {{article.published}}</p>
-				<p class="border-bottom">{{article.body|truncatewords:50}} <a href="{% url 'article:detail' article.slug %}">Selengkapnya</a></p>
+				<p class="border-bottom">{{article.body|truncatewords:50}} <a href="{% url 'article:detail' article.slug %}">More</a></p>
 			{% endfor %}
 			{% if is_paginated %}
 			<nav aria-label="articlePage">

@@ -118,7 +118,6 @@ class ArticleListView(ListView):
 
 	def get_context_data(self,*args,**kwargs):
 		category_list = self.model.objects.values_list('category__name', flat=True).distinct()
-		print(category_list)
 		self.kwargs.update({'category_list':category_list})
 		kwargs = self.kwargs
 		return super().get_context_data(*args,**kwargs)
