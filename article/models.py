@@ -31,14 +31,14 @@ class Article(models.Model):
 			('publish_article', 'Can publish article'),
 		)
 
-	def save(self):
+	def save(self, *args, **kwargs):
 		self.slug = slugify(self.title)
 		if self.is_published == True:
 			self.published = timezone.now()
 		else:
 			self.published = None
 			
-		super().save()
+		super().save(*args, **kwargs)
 
 	def get_absolute_url(self):
 		url_slug = {'slug':self.slug}

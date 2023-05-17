@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>
 		{% block page_title %}
 			
@@ -17,14 +18,12 @@
 		
 		{% endblock contents %}
 	</div>
-
-{% block snippets %}
-    {% if request.path != "/login/"%}
-        {% include 'snippets/footer.html' %}
-    {% endif %}
-{% endblock %}
-
-
+		{% block snippets %}
+			{% if request.path != "/login/"%}
+				{% include 'snippets/footer.html' %}
+			{% endif %}
+		{% endblock %}
+	
 	{% include "snippets/scripts.html" %}
 </body>
 </html>

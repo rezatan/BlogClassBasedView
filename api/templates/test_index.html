@@ -8,10 +8,14 @@
 {% block contents %}
 <link rel="stylesheet" type="text/css" href="{% static 'switch.css' %}">
     <h1>Manage Test</h1>
+    <br>
 	{% if perms.article.add_article %}
+    <div class='mb-4'>
     <a class="btn btn-primary btn-block" href="{% url 'article:create' %}">Add Article</a>
 	<a class="btn btn-primary btn-block" href="{% url 'article:addcategory' %}">Add Category</a>
+    </div>
 	{% endif %}
+    
 	<h1>Rock Paper Scissors Prediction</h1>
     <div id="token-result" style="display: none;">
         <h2>Generated Token:</h2>
@@ -20,24 +24,28 @@
 
     <form id="token-form" action="/api/token/" method="post" class="mb-5">
         {% csrf_token %}
-        <label for="username">Username:</label>
-        <input class="form-control" type="text" id="username" name="username" required><br><br>
-        
-        <label for="password">Password:</label>
-        <input class="form-control" type="password" id="password" name="password" required><br><br>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Username</span>
+            <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="username" name="username" required>
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Password</span>
+            <input type="password" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="password" name="password" required>
+        </div>
         
         <button type="submit" class="btn btn-success">Generate Token</button>
     </form>
     <form id="prediction-form" action="{% url 'api:predict_hand_api' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <label for="image">Upload Image:</label>
-        <input type="file" name="image">
-    <div class="input-group mt-4">
-        <label class="input-group-text" for="token">Token:</label>
-        <input class="form-control" type="text" name="token" placeholder="Token Auth" required>
-        
-    </div>
-    <input type="submit" value="Predict" class="btn btn-success form-control mt-3">
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="inputGroupFile01">Upload</label>
+            <input type="file" class="form-control" id="inputGroupFile01" name="image">
+        </div>
+        <div class="input-group mt-4">
+            <label class="input-group-text" for="token">Token:</label>
+            <input class="form-control" type="text" name="token" placeholder="Token Auth" required>
+        </div>
+        <input type="submit" value="Predict" class="btn btn-success form-control mt-3 mb-3">
     </form>
 
     <div id="prediction-result" style="display: none;">

@@ -1,4 +1,4 @@
-<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-success bg-gradient ">
+<nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-success bg-gradient ">
   <div class="container">
 	  <a class="navbar-brand" href="{% url 'home' %}">BLOG</a>
 	  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -17,7 +17,9 @@
 	      </li>
 		  </ul>
 		<div class="ms-auto">
+			<ul class="navbar-nav">
 			{% if user.is_authenticated %}
+			
 			<li class="nav-item dropdown ">
 				<a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				{{user}}
@@ -33,7 +35,8 @@
 			<li class="navbar-nav text-light">
 				<a class="nav-link" href="{% url 'login' %}">Login</a>
 			</li>
-			{% endif %}  
+			{% endif %}
+			</ul>  
 			</div>
 	  </div>
   </div>

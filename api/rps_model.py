@@ -3,7 +3,7 @@ import numpy as np
 from PIL import Image
 
 # Load the model
-model = tf.keras.models.load_model('static\model')
+model = tf.keras.models.load_model('static/model')
 
 # Function to preprocess the image and perform prediction
 def predict_image(image_file):

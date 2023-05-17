@@ -9,7 +9,7 @@
 	<h1>Home</h1>
 	<div class="row">
 		{% for article in latest_artikel_list %}
-			<div class="col-sm-4">
+			<div class=" col-xs-12 col-sm-6 col-md-6 col-lg-4">
 				<div class="card" >
 				  <div class="card-body">
 				    <h5 class="card-title"><a href="{% url 'article:category' article.category 1%}">{{article.category}}</a></h5>
