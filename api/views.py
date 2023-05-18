@@ -5,6 +5,9 @@ from article.models import Article, Category
 from .serializers import ArticleSerializer, CategorySerializer
 from rest_framework.parsers import MultiPartParser, FormParser
 from .rps_model import predict_image
+from rest_framework.authentication import TokenAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.exceptions import PermissionDenied
 
 class ImagePredictionView(generics.GenericAPIView):
     parser_classes = (MultiPartParser, FormParser)
@@ -17,14 +20,17 @@ class ImagePredictionView(generics.GenericAPIView):
 class CategoryAPIView(generics.ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    authentication_classes = [JWTAuthentication]
     permission_classes = [
-        permissions.IsAuthenticated,
+        permissions.IsAuthenticatedOrReadOnly,
         permissions.BasePermission
         ]
 
-    def has_permission(self, request, view):
-        return 'category.add_category' in request.auth.scope
-
+    def create(self, request, *args, **kwargs):
+        if not request.user.has_perm('article.add_category'):
+            raise PermissionDenied("User does not have permission to add category.")
+        return super().create(request, *args, **kwargs)
+        
     def perform_create(self, serializer):
         category_name = serializer.validated_data.get('name')
         if Category.objects.filter(name=category_name).exists():
@@ -34,12 +40,14 @@ class CategoryAPIView(generics.ListCreateAPIView):
 class ArticleAPIView(generics.ListCreateAPIView):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
-    permission_classes = [
-        permissions.IsAuthenticated,
-        permissions.BasePermission
-    ]
-    def has_permission(self, request, view):
-        return 'article.add_article' in request.auth.scope
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, permissions.BasePermission]
+
+    def create(self, request, *args, **kwargs):
+        # Check if the user has the 'article.add_article' permission
+        if not request.user.has_perm('article.add_article'):
+            raise PermissionDenied("User does not have permission to add articles.")
+        return super().create(request, *args, **kwargs)
 
     def perform_create(self, serializer):
         title = serializer.validated_data.get('title')
@@ -52,10 +60,16 @@ class ArticleAPIView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         queryset = Article.objects.all()
+        title = self.request.query_params.get('title', None)
         category = self.request.query_params.get('category', None)
         if category is not None:
             queryset = queryset.filter(category__name=category)
+        if title is not None:
+            queryset = queryset.filter(title__icontains=title)
         return queryset
 
-def testIndex(request):
-    return render (request, 'test_index.html')
+def test(request):
+    return render (request, 'api_test.html')
+
+def documentation(request):
+    return render (request, 'api_docs.html')

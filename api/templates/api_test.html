@@ -6,35 +6,11 @@
 {% endblock page_title %}
 
 {% block contents %}
-<link rel="stylesheet" type="text/css" href="{% static 'switch.css' %}">
-    <h1>Manage Test</h1>
-    <br>
-	{% if perms.article.add_article %}
+    <h1>Rock Paper Scissors Prediction</h1>
     <div class='mb-4'>
-    <a class="btn btn-primary btn-block" href="{% url 'article:create' %}">Add Article</a>
-	<a class="btn btn-primary btn-block" href="{% url 'article:addcategory' %}">Add Category</a>
+    <a class="btn btn-primary btn-block" href="{% url 'api:documentation' %}">API Docs</a>
     </div>
-	{% endif %}
     
-	<h1>Rock Paper Scissors Prediction</h1>
-    <div id="token-result" style="display: none;">
-        <h2>Generated Token:</h2>
-        <p id="token-text"></p>
-    </div>
-
-    <form id="token-form" action="/api/token/" method="post" class="mb-5">
-        {% csrf_token %}
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1">Username</span>
-            <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="username" name="username" required>
-        </div>
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1">Password</span>
-            <input type="password" class="form-control" aria-label="Username" aria-describedby="basic-addon1" id="password" name="password" required>
-        </div>
-        
-        <button type="submit" class="btn btn-success">Generate Token</button>
-    </form>
     <form id="prediction-form" action="{% url 'api:predict_hand_api' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="input-group mb-3">
@@ -45,7 +21,13 @@
             <label class="input-group-text" for="token">Token:</label>
             <input class="form-control" type="text" name="token" placeholder="Token Auth" required>
         </div>
-        <input type="submit" value="Predict" class="btn btn-success form-control mt-3 mb-3">
+        <div class="row justify-content-center">
+            <div class="col-sm col-md-6">
+                <div class="input-group mb-3">
+                    <input type="submit" value="Predict" class="btn btn-success form-control mt-3 mb-3">
+                    </div>
+            </div>
+        </div>
     </form>
 
     <div id="prediction-result" style="display: none;">
@@ -84,26 +66,4 @@
         });
     });
 </script>
-    <script>
-        $(document).ready(function() {
-            $('#token-form').submit(function(event) {
-                event.preventDefault();
-
-                var form = $(this);
-
-                $.ajax({
-                    url: form.attr('action'),
-                    type: form.attr('method'),
-                    data: form.serialize(),
-                    success: function(response) {
-                        $('#token-text').text(response.access);
-                        $('#token-result').show();
-                    },
-                    error: function() {
-                        alert('Error occurred during token generation.');
-                    }
-                });
-            });
-        });
-    </script>
 {% endblock contents %}

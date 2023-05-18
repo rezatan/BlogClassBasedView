@@ -13,5 +13,6 @@ urlpatterns = [
     path('category/', views.CategoryAPIView.as_view(), name='category_api'),
     path('article/', views.ArticleAPIView.as_view(), name='article_api'),
     path('predicthand/', views.ImagePredictionView.as_view(), name='predict_hand_api'),
-    path('test/', views.testIndex, name='test_index')
+    path('test/', views.test, name='test'),
+    path('documentation/', views.documentation, name='documentation')
 ]
