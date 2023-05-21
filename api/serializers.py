@@ -5,7 +5,7 @@ from django.utils.text import slugify
 class ArticleSerializer(serializers.ModelSerializer):
     title = serializers.CharField(max_length=255)
     body = serializers.CharField()
-    category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all())
+    category = serializers.SlugRelatedField(slug_field='name', queryset=Category.objects.all())
     
     class Meta:
         model = Article

@@ -42,7 +42,67 @@
             </div>
         </div>
     </form>
+    <div class="row">
+        <div class="col-sm col-md-4">
+            <li class="navbar nav"> <a class="nav-link" href="#introduction"> Introduction</a></li>
+            <li class="navbar nav"><a class="nav-link" href="#article">Article</a></li>
+                <li class="navbar nav"><a class="nav-link" href="#articleget">&emsp;&emsp;GET</a></li>
+                <li class="navbar nav"><a class="nav-link" href="#articlepost">&emsp;&emsp;POST</a></li>
+            <li class="navbar nav"><a class="nav-link" href="#category">Category</a></li>
+            <li class="navbar nav"><a class="nav-link" href="#categoryget">&emsp;&emsp;GET</a></li>
+            <li class="navbar nav"><a class="nav-link" href="#categorypost">&emsp;&emsp;POST</a></li>
+            
+                
+            
+        </div>
+        
+        <div class="col-sm col-md-8">
 
+            <section id="introduction"> 
+            <h3>Introduction</h3>
+            <p>&emsp;&emsp;The API generated token has Authorization role same as in article
+            <a class="link-offset-2 link-underline link-underline-opacity-0" href="{% url 'article:detail' 'some-testing-user' %}">Some Testing User</a>. Generate token 
+            first add in Header key Authorization with value adding word Bearer in front of generated token 
+            with 1 space. for example Bearer GeneratedToken
+            </p>
+        </section>
+        <section id="article">
+            <h3>Article</h3>
+        </section>
+        <section id="articleget">
+            <h4>/api/article/</h4>
+            
+            <h5>&emsp;GET</h5>
+            
+            <p>&emsp;&emsp; Getting Article with GET Method. 
+            </p>
+            <h5>&emsp;Parameter : </h5>
+            <P>&emsp;&emsp;You can Add Parameter id, category, title, is_published, slug,
+                use all or some of them or without parameter</P>
+            </section>
+            <section id="articlepost">
+            <h5>&emsp;POST</h5>
+            <p>&emsp;&emsp; Add new Article with POST Method using Body form-data with key title, body
+                category and value string type 
+            </p>
+        </section>
+        <section id="category">
+            <h3>Category</h3>
+        </section>
+        <section id="categoryget">
+            <h4>/api/category/</h4>
+            <h5>&emsp;GET</h5>
+            <p>&emsp;&emsp; Getting All Category with GET Method. </p>
+            <h5>&emsp;Parameter : </h5>
+            <P>&emsp;&emsp;You can Add Parameter id, name, use both or one of them or without parameter</P>
+        </section>
+        <section id="categorypost">
+            <h5>&emsp;POST</h5>
+            <p>&emsp;&emsp; Add new Category with POST Method using Body form-data with key name and value string type 
+            </p>
+        </section>
+        </div>
+    </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {

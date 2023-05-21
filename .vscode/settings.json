@@ -1,5 +1,6 @@
 {
     "python.autoComplete.extraPaths": [
         "D:/P/Django/Env/Lib/site-packages/django"
-    ]
+    ],
+    "editor.tabCompletion": "on"
 }
